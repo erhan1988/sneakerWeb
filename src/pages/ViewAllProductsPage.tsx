@@ -19,21 +19,25 @@ export function ViewAllProductsPage({ onNavigate, onAddToCart }: ViewAllProducts
 
   // Fetch products from Firebase on component mount
   useEffect(() => {
+    let isMounted = true;
     const getProducts = async () => {
       setIsLoading(true);
-      const firebaseProducts = await fetchProductsFromFirebase();
-      
-      // Use Firebase products if available, otherwise use fallback
-      if (firebaseProducts.length > 0) {
-        setAllProducts(firebaseProducts);
-      } else {
-        setAllProducts(fallbackProducts);
-      }
-      
+      // Render fallback immediately for fast UI
+      setAllProducts(fallbackProducts);
       setIsLoading(false);
+
+      const firebaseProducts = await fetchProductsFromFirebase();
+
+      // Replace with Firebase products if available
+      if (isMounted && firebaseProducts.length > 0) {
+        setAllProducts(firebaseProducts);
+      }
     };
-    
+
     getProducts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const totalPages = Math.ceil(allProducts.length / ITEMS_PER_PAGE);

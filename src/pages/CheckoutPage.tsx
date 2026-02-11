@@ -251,7 +251,7 @@ export function CheckoutPage({
                         name="name"
                         required
                         className={`${inputClasses} pl-10`}
-                        placeholder="John Doe"
+                        placeholder="Name"
                         value={formData.name}
                         onChange={handleInputChange} />
 
@@ -312,7 +312,7 @@ export function CheckoutPage({
                       name="city"
                       required
                       className={inputClasses}
-                      placeholder="Skopje"
+                      placeholder="City"
                       value={formData.city}
                       onChange={handleInputChange} />
 
@@ -328,7 +328,7 @@ export function CheckoutPage({
                       name="postalCode"
                       required
                       className={inputClasses}
-                      placeholder="1000"
+                      placeholder="7000"
                       value={formData.postalCode}
                       onChange={handleInputChange} />
 
