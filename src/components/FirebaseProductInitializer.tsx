@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { initializeProductsInFirebase } from '../services/productService';
 
-/**
- * Development component to initialize Firebase products
- * Add this to your app temporarily to populate Firebase with products
- * Then remove it after initialization
- */
 export function FirebaseProductInitializer() {
   const [isLoading, setIsLoading] = useState(false);
 
