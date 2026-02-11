@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ShoppingBag,
@@ -6,11 +6,10 @@ import {
   Mail,
   User,
   ArrowRight,
-  AlertCircle,
-  CheckCircle } from
+  AlertCircle } from
 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { auth, fbCreateUserWithEmailAndPassword, fbUpdateProfile, fbSendEmailVerification, addEmailToRegistry } from '../lib/firebase';
+import { auth, fbCreateUserWithEmailAndPassword, fbUpdateProfile, fbSendEmailVerification, addEmailToRegistry, isFirebaseConfigured } from '../lib/firebase';
 interface RegisterPageProps {
   onNavigate: (page: string) => void;
   onAuthChange?: () => void;
@@ -22,18 +21,21 @@ export function RegisterPage({ onNavigate, onAuthChange }: RegisterPageProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!isFirebaseConfigured) {
+      setError('Firebase is not configured. Add VITE_FIREBASE_* values to .env.local and restart the dev server.');
+      return;
+    }
     // Validate password match
     if (password !== confirmPassword) {
-      setError('Лозинките не се совпаѓаат.');
+      setError('Passwords do not match.');
       return;
     }
     // Validate password length
     if (password.length < 6) {
-      setError('Лозинката мора да има минимум 6 карактери.');
+      setError('Password must be at least 6 characters long.');
       return;
     }
     setIsLoading(true);
@@ -46,13 +48,15 @@ export function RegisterPage({ onNavigate, onAuthChange }: RegisterPageProps) {
         } catch (e) {
           // ignore profile update errors
         }
-        // Add email to registry for forgot password functionality
-        await addEmailToRegistry(email);
         // Skip email verification - go directly to home
         if (onAuthChange) {
           onAuthChange();
         }
-        setSuccess(true);
+        onNavigate('home');
+        // Add email to registry for forgot password functionality (non-blocking)
+        void addEmailToRegistry(email).catch(() => {
+          // ignore registry errors
+        });
       }
     } catch (err: any) {
       // Check for specific Firebase error codes
@@ -72,67 +76,8 @@ export function RegisterPage({ onNavigate, onAuthChange }: RegisterPageProps) {
   const inputClasses =
   'w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white';
   
-  // Auto-redirect to home after 5 seconds when success
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => {
-        onNavigate('home');
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [success, onNavigate]);
-  
   return (
     <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      {/* Success Modal Overlay */}
-      {success && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-          <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.9
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 260,
-              damping: 20
-            }}
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
-            
-            <motion.div
-              initial={{
-                scale: 0
-              }}
-              animate={{
-                scale: 1
-              }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 20,
-                delay: 0.2
-              }}
-              className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle size={32} />
-            </motion.div>
-
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Registration Successful!
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Your account has been created. Redirecting to Home in 5 seconds...
-            </p>
-            <Button onClick={() => onNavigate('home')} className="w-full">
-              Continue to Home
-            </Button>
-          </motion.div>
-        </div>
-      )}
-
       {/* Registration Form */}
       <motion.div
         initial={{

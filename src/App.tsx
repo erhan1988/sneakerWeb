@@ -134,6 +134,9 @@ export function App() {
   };
   const refreshAuth = async () => {
     setUser(auth.currentUser ?? null);
+    if (auth.currentUser) {
+      handleNavigate('home');
+    }
   };
   const addToCart = (product: any) => {
     // Check if user is logged in

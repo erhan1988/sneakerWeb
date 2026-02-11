@@ -14,17 +14,24 @@ import { getFirestore, collection, doc, setDoc, getDocs, query, where } from 'fi
 
 // Firebase config from environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "твој-api-key",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "твој-auth-domain",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "твој-project-id",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "твој-storage-bucket",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "твој-sender-id",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "твој-app-id"
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+const hasPlaceholderConfig = Object.values(firebaseConfig).some((value) => {
+  if (!value) return true;
+  return value.includes('YOUR_') || value.startsWith('твој-');
+});
+
+export const isFirebaseConfigured = !hasPlaceholderConfig;
 
 export { onAuthStateChanged, fbSignOut, fbSignInWithEmailAndPassword, fbCreateUserWithEmailAndPassword, fbUpdateProfile, fbSendEmailVerification, fbSendPasswordResetEmail, fbFetchSignInMethodsForEmail };
 

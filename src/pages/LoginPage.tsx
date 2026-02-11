@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { auth, fbSignInWithEmailAndPassword } from '../lib/firebase';
+import { auth, fbSignInWithEmailAndPassword, isFirebaseConfigured } from '../lib/firebase';
 interface LoginPageProps {
   onNavigate: (page: string) => void;
   onAuthChange?: () => void;
@@ -15,6 +15,10 @@ export function LoginPage({ onNavigate, onAuthChange }: LoginPageProps) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!isFirebaseConfigured) {
+      setError('Firebase is not configured. Add VITE_FIREBASE_* values to .env.local and restart the dev server.');
+      return;
+    }
     setIsLoading(true);
     try {
       const userCred = await fbSignInWithEmailAndPassword(auth, email, password);
