@@ -9,7 +9,7 @@ import {
   AlertCircle } from
 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { auth, fbCreateUserWithEmailAndPassword, fbUpdateProfile, fbSendEmailVerification, addEmailToRegistry, isFirebaseConfigured } from '../lib/firebase';
+import { auth, fbCreateUserWithEmailAndPassword, fbUpdateProfile, addEmailToRegistry, isFirebaseConfigured } from '../lib/firebase';
 interface RegisterPageProps {
   onNavigate: (page: string) => void;
   onAuthChange?: () => void;

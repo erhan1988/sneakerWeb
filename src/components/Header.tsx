@@ -70,6 +70,11 @@ export function Header({
     }
     setIsMobileMenuOpen(false);
   };
+  const handleAccount = () => {
+    onNavigate('account');
+    setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
+  };
   const handleLogout = () => {
     onLogout?.();
     setIsUserMenuOpen(false);
@@ -216,6 +221,13 @@ export function Header({
                         </p>
                       </div>
                       <button
+                    onClick={handleAccount}
+                    className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors">
+
+                        <User size={16} />
+                        Account
+                      </button>
+                      <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors">
 
@@ -315,6 +327,13 @@ export function Header({
                         <p className="text-xs text-gray-500">{userEmail}</p>
                       </div>
                     </div>
+                    <button
+                  onClick={handleAccount}
+                  className="flex items-center justify-center bg-gray-50 text-gray-700 px-4 py-3 rounded-lg font-medium w-full hover:bg-gray-100 transition-colors">
+
+                      <User size={18} className="mr-2" />
+                      Account
+                    </button>
                     <button
                   onClick={handleLogout}
                   className="flex items-center justify-center bg-red-50 text-red-600 px-4 py-3 rounded-lg font-medium w-full hover:bg-red-100 transition-colors">

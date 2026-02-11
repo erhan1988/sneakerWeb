@@ -15,6 +15,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { CheckoutSuccessPage } from './pages/CheckoutSuccessPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { ViewAllProductsPage } from './pages/ViewAllProductsPage';
+import { AccountPage } from './pages/AccountPage';
 import { auth, onAuthStateChanged, fbSignOut as signOut } from './lib/firebase';
 
 interface CartItem {
@@ -87,6 +88,8 @@ export function App() {
         return 'checkout-success';
       case '/viewall':
         return 'viewall';
+      case '/account':
+        return 'account';
       default:
         return 'home';
     }
@@ -115,6 +118,8 @@ export function App() {
           return '/checkout-success';
         case 'viewall':
           return '/viewall';
+        case 'account':
+          return '/account';
         default:
           return '/';
       }
@@ -400,6 +405,20 @@ export function App() {
                   variants={pageVariants}
                   transition={{ duration: 0.3 }}>
                   <ViewAllProductsPage onNavigate={handleNavigate} onAddToCart={addToCart} />
+                </motion.div>
+              )}
+            />
+            <Route
+              path="/account"
+              element={(
+                <motion.div
+                  key="account"
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                  transition={{ duration: 0.3 }}>
+                  <AccountPage onNavigate={handleNavigate} user={user} onAuthChange={refreshAuth} />
                 </motion.div>
               )}
             />
