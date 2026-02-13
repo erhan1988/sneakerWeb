@@ -14,12 +14,12 @@ import { getFirestore, collection, doc, setDoc, getDocs, query, where } from 'fi
 
 // Firebase config from environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "твој-api-key",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "твој-auth-domain",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "твој-project-id",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "твој-storage-bucket",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "твој-sender-id",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "твој-app-id"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyBUyeH3jbL-lPNDNQ7J8-aylpGJVm0jZlc",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "sneakerstudioweb.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "sneakerstudioweb",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "sneakerstudioweb.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "579692958760",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:579692958760:web:eddbc3f0d6106bc745111d"
 };
 
 const app = initializeApp(firebaseConfig);
