@@ -8,7 +8,7 @@ export const allProducts = [
     category: 'Running',
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop',
     isNew: true
-  },
+ },
   {
     id: 2,
     name: 'Adidas Ultraboost',
@@ -108,4 +108,5 @@ export const allProducts = [
     image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop',
     isNew: true
   }
+  
 ];
