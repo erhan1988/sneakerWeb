@@ -108,5 +108,4 @@ export const allProducts = [
     image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop',
     isNew: true
   }
-  
 ];
