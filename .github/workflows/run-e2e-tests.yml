@@ -1,0 +1,20 @@
+name: Run E2E Tests
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  trigger-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Playwright tests in sne repo
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'erhan1988',
+              repo: 'sne',
+              event_type: 'run-playwright-tests'
+            });
