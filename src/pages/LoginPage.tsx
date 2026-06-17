@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ShoppingBag, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { auth, fbSignInWithEmailAndPassword, isFirebaseConfigured } from '../lib/firebase';
+import { browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
 interface LoginPageProps {
   onNavigate: (page: string) => void;
   onAuthChange?: () => void;
@@ -10,6 +11,7 @@ interface LoginPageProps {
 export function LoginPage({ onNavigate, onAuthChange }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const handleLogin = async (e: React.FormEvent) => {
@@ -21,6 +23,7 @@ export function LoginPage({ onNavigate, onAuthChange }: LoginPageProps) {
     }
     setIsLoading(true);
     try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       const userCred = await fbSignInWithEmailAndPassword(auth, email, password);
       if (userCred.user) {
         onAuthChange?.();
@@ -138,6 +141,8 @@ export function LoginPage({ onNavigate, onAuthChange }: LoginPageProps) {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
 
               <label

@@ -38,8 +38,17 @@ export function App() {
   // Check for existing session on mount (Firebase)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u ?? null);
+      const currentUser = u ?? null;
+      setUser(currentUser);
       setAuthLoading(false);
+
+      if (currentUser) {
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userWelcome', currentUser.displayName ?? currentUser.email ?? 'Welcome back');
+      } else {
+        localStorage.removeItem('userLoggedIn');
+        localStorage.removeItem('userWelcome');
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -203,6 +212,15 @@ export function App() {
       y: -10
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white text-gray-900">
+        <p className="text-base font-medium">Loading your session...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
       <Header
